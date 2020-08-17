@@ -425,7 +425,7 @@ content:
       L1TrkMET.MVATrkMet:
         aliases:
         -  event.L1TrkMET_MVATrkMet
-        L1TrkMET.MVATrkMetPhi:
+      L1TrkMET.MVATrkMetPhi:
         aliases:
         -  event.L1TrkMET_MVATrkMetPhi
       L1TrkMET.MVATrkSumEt:
