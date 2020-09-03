@@ -1,0 +1,98 @@
+version: 1
+name: 'Jet Met Rates'
+
+input:
+  files:
+      # Zero Bias
+      - /vols/cms/cb719/l1_JetMET/nu500k_JetMET.root
+      #- /vols/cms/cb719/l1_JetMET/nu500k_JetMET.root
+  sample:
+    name: nu
+    title: MC
+  trigger:
+    name: MET
+    title: Track
+  pileup_file: ""
+  run_number:
+  ntuple_map_file: config/ntuple_content_mc_p2.yaml
+
+analysis:
+  load_trees:
+    - p2Upgrade
+
+  do_fit: True
+  pu_type: 0PU
+  pu_bins: [0, 999]
+  thresholds:
+    HT:           [200, 400]
+    METBE:        [80, 150]
+    METHF:        [80, 150]
+    JetET_BE:     [100, 200]
+    JetET_HF:     [100, 200]
+# these are the fixed rates we want to use to
+# compare different emulations at different
+# thresholds that give this rate, from TDR Menu
+# *** These are for particle flow!
+  rates:
+    HT:           11 #kHz
+    METBE:        18
+    METHF:        18
+    JetET_BE:     70
+    JetET_HF:     3 # guess
+
+  analyzers:
+     HW_Emu_jetMet_rates:
+       module: cmsl1t.analyzers.HW_Emu_jetMet_rates
+  producers:
+    genSums:
+      module: cmsl1t.producers.gensums_trk
+      inputs:
+        - L1TrkMET_GenMet
+        - L1TrackJet_GenJetHt
+      outputs:
+        - genSums
+    l1Sums:
+      module: cmsl1t.producers.l1p2sums_trk
+      inputs:
+        #- L1TrkMET_TrkMet
+        #- L1TrkMET_TrkMetPhi
+        #- L1TrkMET_CutTrkMet
+        #- L1TrkMET_CutTrkMetPhi
+        - L1TrkMET_MVATrkMet
+        - L1TrkMET_MVATrkMetPhi
+        #- L1TrackJet_TrkJetHt
+        #- L1TrackJet_CutTrkJetHt
+        - L1TrackJet_MVATrkJetHt
+      outputs:
+        - l1Sums
+    goodGenJets:
+      module: cmsl1t.producers.jets
+      inputs:
+        - L1TrackJet_GenJetPt
+        - L1TrackJet_GenJetEta
+        - L1TrackJet_GenJetPhi
+      jetType: Gen
+      outputs:
+        - goodGenJets
+    l1Jets:
+      module: cmsl1t.producers.jets
+      inputs:
+        #- L1TrackJet_TrkJetEt
+        #- L1TrackJet_TrkJetEta
+        #- L1TrackJet_TrkJetPhi
+        #- L1TrackJet_CutTrkJetEt
+        #- L1TrackJet_CutTrkJetEta
+        #- L1TrackJet_CutTrkJetPhi
+        - L1TrackJet_MVATrkJetEt
+        - L1TrackJet_MVATrkJetEta
+        - L1TrackJet_MVATrkJetPhi
+      jetType: L1
+      filter: null
+      outputs:
+        - l1Jets
+
+output:
+  template:
+     - output/zb_rates/mva
+     - "{date}_{sample_name}_{trigger_name}"
+

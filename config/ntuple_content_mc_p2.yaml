@@ -431,6 +431,15 @@ content:
       L1TrkMET.MVATrkSumEt:
         aliases:
         -  event.L1TrkMET_MVATrkSumEt
+      L1TrkMET.SimTrkMet:
+        aliases:
+        -  event.L1TrkMET_SimTrkMet
+      L1TrkMET.SimTrkMetPhi:
+        aliases:
+        -  event.L1TrkMET_SimTrkMetPhi
+      L1TrkMET.SimTrkSumEt:
+        aliases:
+        -  event.L1TrkMET_SimTrkSumEt
   l1TrackJetTree/L1TrackJetTree:
     name: L1TrackJet
     optional: true

@@ -12,7 +12,7 @@ class Producer(BaseProducer):
     def produce(self, event):
 
         l1Met = 0
-        trkMets = ['L1TrkMET_TrkMet', 'L1TrkMET_CutTrkMet', 'L1TrkMET_MVATrkMet']
+        trkMets = ['L1TrkMET_TrkMet', 'L1TrkMET_CutTrkMet', 'L1TrkMET_MVATrkMet','L1TrkMET_SimTrkMet']
         for trkMet in trkMets:
             if trkMet in self._inputs:
                 l1Met = event[trkMet]

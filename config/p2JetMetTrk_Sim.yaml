@@ -1,0 +1,59 @@
+version: 1
+name: 'Jet Met MC Studies'
+
+input:
+  files:
+      # ttbar MC
+      - /vols/cms/cb719/l1_JetMET/ttbar100k_JetMET_GBDT.root
+      #- /vols/cms/cb719/l1_JetMET/ttbar100k_JetMET.root
+      #- /vols/cms/cb719/l1_JetMET/Wjets100k_JetMET.root
+  sample:
+    name: ttbar
+    title: MC
+  trigger:
+    name: MET
+    title: Track
+  pileup_file: ""
+  run_number:
+  ntuple_map_file: config/ntuple_content_mc_p2.yaml
+
+analysis:
+  load_trees:
+    - p2Upgrade
+    - p2TrkMet
+
+  do_fit: True
+  pu_type: 0PU
+  pu_bins: [0,999]
+  thresholds:
+    HT:           [354]
+    METBE:        [103]
+    METHF:        [103]
+    JetET_BE:     [121]
+    JetET_HF:     [110]
+
+  analyzers:
+     jetMet_analyzer:
+       module: cmsl1t.analyzers.jetMet_analyzer
+  producers:
+    genSums:
+      module: cmsl1t.producers.gensums_trk
+      inputs:
+        - L1TrkMET_GenMet
+        - L1TrackJet_GenJetHt
+      outputs:
+        - genSums
+    l1Sums:
+      module: cmsl1t.producers.l1p2sums_trk
+      inputs:
+        -L1TrkMET_SimTrkMet
+        -L1TrkMET_SimTrkMetPhi
+
+      outputs:
+        - l1Sums
+
+
+output:
+  template:
+     - output/constant_rate_turnons/sim
+     - "{date}_{sample_name}_{trigger_name}"
